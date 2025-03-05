@@ -5,9 +5,20 @@ from colorama import Fore, Style
 colorama.init(autoreset=True)
 
 def hangman():
-    superhero = ['superman', 'batman', 'spiderman', 'thor', 'ironman']
+    categories = {
+        "Superheroes": ['superman', 'batman', 'spiderman', 'thor', 'ironman'],
+        "Animals": ['elephant', 'giraffe', 'kangaroo', 'dolphin', 'penguin'],
+        "Countries": ['southafrica', 'america', 'nigeria', 'canada', 'germany'],
+        "Food": ['pizza', 'hamburger', 'spaghetti', 'sandwich', 'biryani']
+    }
 
-    word = random.choice(superhero).lower()
+    print("Choose a category:")
+    for i, category in enumerate(categories.keys(), start=1):
+        print(f"{i}. {category}")
+
+    choice = int(input("Enter your choice (1-4): "))
+    selected_category = list(categories.keys())[choice - 1]
+    word = random.choice(categories[selected_category]).lower()
     
     valid_letters = 'abcdefghijklmnopqrstuvwxyz'
     turns = 10

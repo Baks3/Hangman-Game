@@ -13,7 +13,6 @@ def hangman():
     turns = 10
     guessmade = []
     score = 0
-    hints = 1
 
     print(f"The word has {len(word)} letters")
 
@@ -78,11 +77,3 @@ def hangman():
 
     print(Fore.CYAN + "Thank you for playing! Goodbye!")
 
-
-if __name__ == "__main__":
-    print(Fore.CYAN + "Welcome to Hangman Game!")
-    print("----------------------------")
-    name = input("Enter your name: ")
-    print(f"Hello {name}!")
-    print("Try to guess the word in less than 10 attempts.")
-    hangman()

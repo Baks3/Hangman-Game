@@ -1,98 +1,88 @@
 import random
+import colorama
+from colorama import Fore, Style
+
+colorama.init(autoreset=True)
+
 def hangman():
+    superhero = ['superman', 'batman', 'spiderman', 'thor', 'ironman']
 
-    word =  "superman"
-    validLetters = 'abcdefghijklmnopqrstuvwxyz'
+    word = random.choice(superhero).lower()
+    
+    valid_letters = 'abcdefghijklmnopqrstuvwxyz'
     turns = 10
-    guessmade = ''
+    guessmade = []
+    score = 0
+    hints = 1
 
-    while len(word) > 0:
+    print(f"The word has {len(word)} letters")
+
+    while True:
         main = ""
         missed = 0
 
         for letter in word:
             if letter in guessmade:
-                main = main + letter
+                main += letter + " "
             else:
-                main = main + "_" + " "
-        if main == word:
-            print(main)
-            print("You win!")
+                main += "_ "
+
+        print("\nGuess the word:", main.strip())
+
+        if main.replace(" ", "") == word:
+            print(Fore.GREEN + f"🎉 Congratulations! You won with {score} points!")
             break
 
-        print("Guess the word:" , main)
-        guess = input()
+        guess = input("Enter a letter: ").lower()
 
-        if guess in validLetters:
-            guessmade = guessmade + guess
+        if len(guess) != 1 or guess not in valid_letters:
+            print(Fore.RED + "⚠️ Invalid input. Please enter a single letter.")
+            continue
+
+        if guess in guessmade:
+            print(Fore.YELLOW + "⚠️ You already guessed that letter.")
+            continue
+
+        guessmade.append(guess)
+
+        if guess in word:
+            print(Fore.GREEN + "✅ Correct Guess!")
         else:
-            print("Enter a valid character")
-            guess = input()
+            print(Fore.RED + "❌ Wrong Guess!")
+            turns -= 1
+            print(f"{turns} turns left")
 
-        if guess not in word:
-            turns = turns - 1
-            if turns == 9:
-                print("9 turns left")
-                print("  --------  ")
-            if turns == 8:
-                print("8 turns left")
-                print("  --------  ")
-                print("     O      ")
-            if turns == 7:
-                print("7 turns left")
-                print("  --------  ")
-                print("     O      ")
-                print("     |      ")
-            if turns == 6:
-                print("6 turns left")
-                print("  --------  ")
-                print("     O      ")
-                print("     |      ")
-                print("    /       ")
-            if turns == 5:
-                print("5 turns left")
-                print("  --------  ")
-                print("     O      ")
-                print("     |      ")
-                print("    / \     ")
-            if turns == 4:
-                print("4 turns left")
-                print("  --------  ")
-                print("   \ O      ")
-                print("     |      ")
-                print("    / \     ")
-            if turns == 3:
-                print("3 turns left")
-                print("  --------  ")
-                print("   \ O /    ")
-                print("     |      ")
-                print("    / \     ")
-            if turns == 2:
-                print("2 turns left")
-                print("  --------  ")
-                print("   \ O /|   ")
-                print("     |      ")
-                print("    / \     ")
-            if turns == 1:
-                print("1 turns left")
-                print("Last breaths counting, Take care!")
-                print("  --------  ")
-                print("   \ O_|/   ")
-                print("     |      ")
-                print("    / \     ")
-            if turns == 0:
-                print("You loose")
-                print("You let a kind man die")
-                print("  --------  ")
-                print("     O_|    ")
-                print("    /|\      ")
-                print("    / \     ")
-                break
+        stages = [
+            "  --------  \n     O_|    \n    /|\\      \n    / \\     ",
+            "  --------  \n   \\ O_|/   \n     |      \n    / \\     ",
+            "  --------  \n   \\ O /|   \n     |      \n    / \\     ",
+            "  --------  \n   \\ O /    \n     |      \n    / \\     ",
+            "  --------  \n   \\ O      \n     |      \n    / \\     ",
+            "  --------  \n     O      \n     |      \n    / \\     ",
+            "  --------  \n     O      \n     |      \n    /       ",
+            "  --------  \n     O      \n     |      ",
+            "  --------  \n     O      ",
+            "  --------  "
+        ]
+
+        if turns < len(stages):
+            if turns > 0:
+                print(stages[turns - 10])
+            else:
+                print(stages[0]) 
 
 
-name = input("Enter your name")
-print("Welcome" , name )
-print("-------------------")
-print("try to guess the word in less than 10 attempts")
-hangman()
-print()
+        if turns == 0:
+            print(Fore.RED + f"\n💀 You lost! The word was: {word}")
+            break
+
+    print(Fore.CYAN + "Thank you for playing! Goodbye!")
+
+
+if __name__ == "__main__":
+    print(Fore.CYAN + "Welcome to Hangman Game!")
+    print("----------------------------")
+    name = input("Enter your name: ")
+    print(f"Hello {name}!")
+    print("Try to guess the word in less than 10 attempts.")
+    hangman()

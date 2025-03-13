@@ -24,7 +24,9 @@ def hangman():
     turns = 10
     guessmade = []
     score = 0
+    hints = 1
 
+    print(f"\nCategory: {selected_category}")
     print(f"The word has {len(word)} letters")
 
     while True:
@@ -43,6 +45,12 @@ def hangman():
             print(Fore.GREEN + f"🎉 Congratulations! You won with {score} points!")
             break
 
+        if hints > 0:
+            hint = input(Fore.YELLOW + "Do you need a hint? (yes/no): ").lower()
+            if hint == "yes":
+                print(Fore.YELLOW + f"Hint: The first letter is '{word[0]}'")
+                hints -= 1
+
         guess = input("Enter a letter: ").lower()
 
         if len(guess) != 1 or guess not in valid_letters:
@@ -57,10 +65,12 @@ def hangman():
 
         if guess in word:
             print(Fore.GREEN + "✅ Correct Guess!")
+            score += 10
         else:
             print(Fore.RED + "❌ Wrong Guess!")
             turns -= 1
             print(f"{turns} turns left")
+            score -= 5
 
         stages = [
             "  --------  \n     O_|    \n    /|\\      \n    / \\     ",
@@ -76,15 +86,23 @@ def hangman():
         ]
 
         if turns < len(stages):
-            if turns > 0:
-                print(stages[turns - 10])
-            else:
-                print(stages[0]) 
-
+            print(stages[10 - turns])
 
         if turns == 0:
             print(Fore.RED + f"\n💀 You lost! The word was: {word}")
             break
 
-    print(Fore.CYAN + "Thank you for playing! Goodbye!")
+    replay = input(Fore.CYAN + "Do you want to play again? (yes/no): ").lower()
+    if replay == "yes":
+        hangman()
+    else:
+        print(Fore.CYAN + "Thank you for playing! Goodbye!")
 
+
+if __name__ == "__main__":
+    print(Fore.CYAN + "Welcome to Hangman Game!")
+    print("----------------------------")
+    name = input("Enter your name: ")
+    print(f"Hello {name}!")
+    print("Try to guess the word in less than 10 attempts.")
+    hangman()

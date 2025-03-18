@@ -13,21 +13,8 @@ def hangman():
         "Food": ['pizza', 'hamburger', 'spaghetti', 'sandwich', 'biryani']
     }
 
-    print("Choose a category:")
-    for i, category in enumerate(categories.keys(), start=1):
-        print(f"{i}. {category}")
-
-    while True:
-        try:
-            choice = int(input("Enter your choice (1-4): "))
-            if 1 <= choice <= 4:
-                break
-            else:
-                print(Fore.RED + "⚠️ Invalid choice. Please select 1-4.")
-        except ValueError:
-            print(Fore.RED + "⚠️ Please enter a number between 1 and 4.")
-
-    selected_category = list(categories.keys())[choice - 1]
+    selected_category = random.choice(list(categories.keys()))
+    print(f"Your category is: {selected_category}")
     word = random.choice(categories[selected_category]).lower()
     
     valid_letters = 'abcdefghijklmnopqrstuvwxyz'
@@ -36,10 +23,9 @@ def hangman():
     score = 0
     hints = 1
 
-    print(f"\nCategory: {selected_category}")
+    print(f"Your category is: {selected_category}")
     print(f"The word has {len(word)} letters")
 
-    # Timed input function
     def timed_input(prompt, timeout=10):
         result = [None]
 

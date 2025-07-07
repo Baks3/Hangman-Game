@@ -14,7 +14,6 @@ def hangman():
     }
 
     selected_category = random.choice(list(categories.keys()))
-    print(f"Your category is: {selected_category}")
     word = random.choice(categories[selected_category]).lower()
     
     valid_letters = 'abcdefghijklmnopqrstuvwxyz'
@@ -22,6 +21,7 @@ def hangman():
     guessmade = []
     score = 0
     hints = 1
+    wrong_guesses = 0
 
     print(f"Your category is: {selected_category}")
     print(f"The word has {len(word)} letters")
@@ -42,17 +42,19 @@ def hangman():
             return None
         return result[0]
 
+ 
     stages = [
-        "  --------  \n     O_|    \n    /|\\      \n    / \\     ",
-        "  --------  \n   \\ O_|/   \n     |      \n    / \\     ",
-        "  --------  \n   \\ O /|   \n     |      \n    / \\     ",
-        "  --------  \n   \\ O /    \n     |      \n    / \\     ",
-        "  --------  \n   \\ O      \n     |      \n    / \\     ",
-        "  --------  \n     O      \n     |      \n    / \\     ",
-        "  --------  \n     O      \n     |      \n    /       ",
-        "  --------  \n     O      \n     |      ",
+        "",
+        "  --------  ",
         "  --------  \n     O      ",
-        "  --------  "
+        "  --------  \n     O      \n     |      ",
+        "  --------  \n     O      \n     |      \n    /       ",
+        "  --------  \n     O      \n     |      \n    / \\     ",
+        "  --------  \n     O      \n    /|      \n    / \\     ",
+        "  --------  \n     O      \n    /|\\     \n    / \\     ",
+        "  --------  \n   \\ O      \n    /|\\     \n    / \\     ",
+        "  --------  \n   \\ O /    \n    /|\\     \n    / \\     ",
+        "  --------  \n   \\ O_/    \n    /|\\     \n    / \\     " 
     ]
 
     while True:
@@ -78,6 +80,7 @@ def hangman():
         guess = timed_input(Fore.CYAN + "Enter a letter (10 sec): ", timeout=10)
         if guess is None:
             turns -= 1
+            wrong_guesses += 1
             score -= 5
             print(Fore.RED + f"❌ No input - You lost a turn! Turns left: {turns}")
         else:
@@ -98,11 +101,12 @@ def hangman():
             else:
                 print(Fore.RED + "❌ Wrong Guess!")
                 turns -= 1
+                wrong_guesses += 1
                 print(f"{turns} turns left")
                 score -= 5
 
-        if turns <= len(stages) and turns > 0:
-            print(stages[10 - turns])
+        if wrong_guesses < len(stages):
+            print(stages[wrong_guesses])
 
         if turns == 0:
             print(Fore.RED + f"\n💀 You lost! The word was: {word}")
@@ -113,3 +117,7 @@ def hangman():
         hangman()
     else:
         print(Fore.CYAN + "Thank you for playing! Goodbye!")
+
+
+if __name__ == "__main__":
+    hangman()
